@@ -1,11 +1,13 @@
+import 'server-only';
+
 import { createClient } from '@supabase/supabase-js';
 
 /**
  * Cliente con service_role. D-59: NUNCA se importa desde un Componente de Cliente.
  *
- * Solo para lo que no puede pasar por una RPC de staff: Auth Admin API
- * (reenvio de verificacion, recuperacion de contrasena) y borrado de imagenes.
- * Para todo lo demas va el cliente de sesion + una RPC staff.fn_* (D-58).
+ * Sólo para lecturas privilegiadas del panel, Auth Admin API, borrado de imágenes
+ * y el envío best-effort a send_notification después de que una RPC de negocio
+ * haya terminado con éxito. Nunca se usa para invocar una RPC staff.fn_*.
  */
 export function crearClienteAdmin() {
   const clave = process.env.SUPABASE_SERVICE_ROLE_KEY;
