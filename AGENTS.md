@@ -69,6 +69,15 @@ revisión, detalle con asignación, resolución y listado de publicaciones activ
 privilegiadas están en `lib/datos/revision.ts`; el catálogo de motivos y nombres de revisores se
 obtiene mediante el wrapper público de sesión. Las mutaciones siguen pasando sólo por RPC.
 
+**Bloque 4-B implementado localmente, sin commit ni despliegue.** Existen búsqueda de usuarios
+(`/usuarios`, contacto siempre ofuscado desde el server), ficha (`/usuarios/[id]`: estado de cuenta
+y historial de penalizaciones arriba, cooldowns, «Ver contacto» con motivo) y las acciones de cuenta
+con diálogos propios (`components/dialogo-accion.tsx`: una clave de idempotencia por apertura,
+fricción de escribir el usuario en suspender y bloquear). El rechazo de publicaciones exige detalle.
+Las mutaciones llaman a los wrappers `fn_staff_*` con la sesión del staff (`lib/rpc.ts`); los avisos
+se reenvían con `lib/avisos.ts`; los códigos de error se traducen en `lib/errores.ts`.
+**Sale JUNTO con las migraciones del Bloque 4-R de `PocketarApp` (`db push`).**
+
 **Requiere los contratos de Bloque 1 y Prompt 1 en el entorno objetivo.** El login y las pantallas
 requieren el claim `pocketar_staff`, `fn_staff_sesion_activa()` y
 `fn_staff_catalogo_revision()`; si esos contratos no están disponibles, el acceso o el rechazo
