@@ -136,7 +136,7 @@ h2 { font-size: 19px; margin-bottom: 8px; }
   .barra { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; min-height: auto; padding: 8px 12px; }
   .marca { align-self: center; font-size: 16px; }
   .marca span { font-size: 10px; }
-  .barra nav { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; min-width: 0; }
+  .barra nav { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; min-width: 0; }
   .barra nav a { min-width: 0; padding: 8px 4px; text-align: center; font-size: 12px; white-space: nowrap; }
   .barra form { grid-column: 2; grid-row: 1; }
   .salir { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
@@ -162,3 +162,47 @@ h2 { font-size: 19px; margin-bottom: 8px; }
   .fila-publicacion { grid-template-columns: 1fr; }
   .fila-publicacion .sla { grid-column: auto; }
 }
+
+/* Bloque 4-B: usuarios, sanciones y acciones de cuenta */
+.busqueda-usuarios { margin-bottom: 20px; max-width: 640px; }
+.busqueda-usuarios .botonera { display: flex; gap: 8px; }
+.busqueda-usuarios .botonera input { flex: 1; }
+.fila-usuario { display: grid; grid-template-columns: 1.3fr 1.3fr 1fr 1fr auto; align-items: center; gap: 16px; background: var(--navy-elevado); border: 1px solid var(--borde); border-radius: 12px; padding: 14px; color: var(--crema); text-decoration: none; min-height: 44px; }
+.fila-usuario:hover { border-color: var(--oro); }
+.fila-usuario span { display: block; color: var(--atenuado); font-size: 12px; margin-bottom: 3px; }
+.fila-usuario strong { display: block; overflow-wrap: anywhere; }
+.estado-cuenta { min-width: 220px; border: 1px solid var(--borde); background: var(--navy-elevado); padding: 14px; border-radius: 12px; }
+.estado-cuenta span { display: block; color: var(--atenuado); font-size: 12px; margin-bottom: 5px; }
+.estado-cuenta strong { font-size: 17px; }
+.estado-cuenta.activa strong { color: var(--oro); }
+.estado-cuenta.suspendida { border-color: #b99351; }
+.estado-cuenta.bloqueada { border-color: var(--alerta); }
+.estado-cuenta.bloqueada strong, .estado-cuenta.suspendida strong { color: var(--alerta); }
+.lista-penalizaciones, .lista-cooldowns { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.penalizacion { border: 1px solid var(--borde); border-radius: 12px; padding: 14px; display: grid; gap: 10px; }
+.penalizacion.vigente { border-color: var(--alerta); }
+.penalizacion.levantada, .penalizacion.vencida { opacity: .85; }
+.penalizacion-cabecera { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.penalizacion .dato { min-height: 0; }
+.fila-cooldown { display: flex; gap: 12px; align-items: center; justify-content: space-between; border: 1px solid var(--borde); border-radius: 12px; padding: 12px 14px; flex-wrap: wrap; }
+.fila-cooldown strong, .fila-cooldown span { display: block; }
+.grupo-acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.botonera { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.dialogo { max-width: min(560px, calc(100vw - 24px)); width: 100%; max-height: calc(100dvh - 24px); overflow-y: auto; border: 1px solid var(--oro); border-radius: 14px; background: var(--navy-elevado); color: var(--crema); padding: 0; }
+.dialogo::backdrop { background: rgb(0 0 0 / .75); }
+.dialogo-cuerpo { padding: 20px; }
+.dialogo-cuerpo label { margin-top: 12px; }
+.dialogo-cuerpo ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.45; }
+.exito { border: 1px solid var(--oro); border-radius: 8px; padding: 10px 12px; background: color-mix(in srgb, var(--oro) 10%, transparent); }
+.efectos { display: grid; gap: 4px; margin: 8px 0; }
+.efectos > div { display: flex; justify-content: space-between; gap: 12px; }
+.efectos dt { color: var(--atenuado); }
+.efectos dd { margin: 0; }
+@media (max-width: 760px) {
+  .fila-usuario { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .estado-cuenta { margin-top: 18px; }
+}
+@media (max-width: 420px) {
+  .fila-usuario { grid-template-columns: 1fr; }
+}
+button:disabled { opacity: .45; cursor: not-allowed; }

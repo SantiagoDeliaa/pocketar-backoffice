@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { exigirStaff } from '@/lib/staff';
 import { crearClienteServidor } from '@/lib/supabase/server';
-import { crearClienteAdmin } from '@/lib/supabase/admin';
+import { enviarAvisos } from '@/lib/avisos';
 import { obtenerComplementoRevision } from '@/lib/datos/revision';
 import type { CatalogoRevision } from '@/lib/tipos/revision';
 
@@ -17,29 +17,6 @@ async function contextoAuditoria() {
     ip: cabeceras.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null,
     userAgent: cabeceras.get('user-agent') ?? null,
   };
-}
-
-async function enviarAvisos(notificar: unknown) {
-  if (!Array.isArray(notificar) || notificar.length === 0) return;
-
-  const claveServicio = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!claveServicio) {
-    console.error('No pudimos enviar los avisos externos: falta la configuración de servidor.');
-    return;
-  }
-
-  try {
-    const admin = crearClienteAdmin();
-    for (const aviso of notificar) {
-      const { error } = await admin.functions.invoke('send_notification', {
-        body: { ...(aviso as Record<string, unknown>), ya_persistida: true },
-        headers: { Authorization: `Bearer ${claveServicio}` },
-      });
-      if (error) console.error('No pudimos enviar el aviso posterior a la operación.', error.message);
-    }
-  } catch (error) {
-    console.error('No pudimos preparar el envío externo posterior a la operación.', error);
-  }
 }
 
 async function ejecutar(nombre: string, parametros: Record<string, unknown>): Promise<ResultadoAccion> {
@@ -64,7 +41,7 @@ async function ejecutar(nombre: string, parametros: Record<string, unknown>): Pr
 }
 
 function extraerCodigo(mensaje: string) {
-  const coincidente = mensaje.match(/(STALE_REVISION|FORBIDDEN|ASSIGNED_TO_OTHER|AUCTION_NOT_IN_REVIEW|AUCTION_NOT_OPEN|SELF_REVIEW|MESSAGE_REQUIRED|MESSAGE_TOO_LONG|COOLDOWN_NOT_APPLICABLE|INVALID_[A-Z_]+|AUCTION_NOT_FOUND)/);
+  const coincidente = mensaje.match(/(STALE_REVISION|FORBIDDEN|ASSIGNED_TO_OTHER|AUCTION_NOT_IN_REVIEW|AUCTION_NOT_OPEN|SELF_REVIEW|MESSAGE_REQUIRED|MESSAGE_TOO_LONG|COOLDOWN_NOT_APPLICABLE|DETAIL_REQUIRED|INVALID_[A-Z_]+|AUCTION_NOT_FOUND)/);
   return coincidente?.[1] ?? 'OPERACION_NO_DISPONIBLE';
 }
 
@@ -124,11 +101,13 @@ export async function rechazarPublicacion(
   detalle: string,
   idempotencyKey: string,
 ) {
+  // El detalle es obligatorio (4.13). La RPC también lo exige y responde DETAIL_REQUIRED.
+  if (!detalle.trim()) return { ok: false as const, codigo: 'DETAIL_REQUIRED' };
   return ejecutar('fn_staff_rechazar_publicacion', {
     p_auction_id: id,
     p_intentos_revision: intentosRevision,
     p_motivo: motivo,
-    p_detalle: detalle.trim() || null,
+    p_detalle: detalle.trim(),
     p_idempotency_key: idempotencyKey,
   });
 }
