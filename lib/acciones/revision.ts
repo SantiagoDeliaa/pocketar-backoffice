@@ -22,13 +22,23 @@ async function contextoAuditoria() {
 async function enviarAvisos(notificar: unknown) {
   if (!Array.isArray(notificar) || notificar.length === 0) return;
 
-  const admin = crearClienteAdmin();
+  const claveServicio = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!claveServicio) {
+    console.error('No pudimos enviar los avisos externos: falta la configuración de servidor.');
+    return;
+  }
 
-  for (const aviso of notificar) {
-    const { error } = await admin.functions.invoke('send_notification', {
-      body: { ...(aviso as Record<string, unknown>), ya_persistida: true },
-    });
-    if (error) console.error('No pudimos enviar el aviso posterior a la operación.', error.message);
+  try {
+    const admin = crearClienteAdmin();
+    for (const aviso of notificar) {
+      const { error } = await admin.functions.invoke('send_notification', {
+        body: { ...(aviso as Record<string, unknown>), ya_persistida: true },
+        headers: { Authorization: `Bearer ${claveServicio}` },
+      });
+      if (error) console.error('No pudimos enviar el aviso posterior a la operación.', error.message);
+    }
+  } catch (error) {
+    console.error('No pudimos preparar el envío externo posterior a la operación.', error);
   }
 }
 

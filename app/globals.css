@@ -133,12 +133,13 @@ h2 { font-size: 19px; margin-bottom: 8px; }
 }
 
 @media (max-width: 760px) {
-  .barra { gap: 10px; padding-inline: 12px; }
-  .barra nav { overflow-x: auto; }
-  .barra nav a { padding-inline: 8px; }
-  .marca { font-size: 0; }
-  .marca span { font-size: 11px; }
-  .salir { padding: 8px; font-size: 12px; }
+  .barra { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; min-height: auto; padding: 8px 12px; }
+  .marca { align-self: center; font-size: 16px; }
+  .marca span { font-size: 10px; }
+  .barra nav { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; min-width: 0; }
+  .barra nav a { min-width: 0; padding: 8px 4px; text-align: center; font-size: 12px; white-space: nowrap; }
+  .barra form { grid-column: 2; grid-row: 1; }
+  .salir { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
   .contenedor { padding: 24px 16px 48px; }
   .metricas { grid-template-columns: 1fr 1fr; }
   .metrica.principal { grid-column: span 2; }
