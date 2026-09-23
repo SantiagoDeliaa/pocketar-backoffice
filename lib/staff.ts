@@ -25,6 +25,13 @@ export async function exigirStaff(): Promise<SesionStaff> {
     throw new Error('NO_ES_STAFF');
   }
 
+  const { data: sesionActiva, error: errorSesionActiva } = await supabase.rpc(
+    'fn_staff_sesion_activa',
+  );
+  if (errorSesionActiva || sesionActiva !== true) {
+    throw new Error('NO_ES_STAFF');
+  }
+
   return {
     userId: String(claims.sub),
     email: typeof claims.email === 'string' ? claims.email : null,

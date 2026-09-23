@@ -56,7 +56,7 @@ app/            Rutas (App Router). Server Components por defecto.
 lib/staff.ts    exigirStaff() — la segunda barrera
 lib/supabase/
   server.ts     Cliente con la sesión del staff. El de uso normal
-  admin.ts      service_role. Sólo Auth Admin API y borrado de imágenes
+  admin.ts      service_role. Lecturas privilegiadas, Auth Admin API, borrado de imágenes y envío externo posterior a una RPC exitosa
 middleware.ts   Primera barrera
 ```
 
@@ -64,12 +64,15 @@ middleware.ts   Primera barrera
 
 ## Estado actual
 
-**Scaffold.** Existen el login, el middleware y la capa de acceso. No existe ninguna pantalla
-de operación todavía: la cola de revisión es el Bloque 3 de la Fase 7.
+**Bloque 3 implementado localmente, sin commit ni despliegue.** Existen inicio operativo, cola de
+revisión, detalle con asignación, resolución y listado de publicaciones activas. Las lecturas
+privilegiadas están en `lib/datos/revision.ts`; el catálogo de motivos y nombres de revisores se
+obtiene mediante el wrapper público de sesión. Las mutaciones siguen pasando sólo por RPC.
 
-**Hasta que el Bloque 1 esté aplicado en la base, ningún login va a pasar el middleware.** Es
-el comportamiento esperado, no un defecto: el claim `pocketar_staff` lo emite un Auth Hook que
-todavía no existe.
+**Requiere los contratos de Bloque 1 y Prompt 1 en el entorno objetivo.** El login y las pantallas
+requieren el claim `pocketar_staff`, `fn_staff_sesion_activa()` y
+`fn_staff_catalogo_revision()`; si esos contratos no están disponibles, el acceso o el rechazo
+quedan cerrados de forma segura.
 
 ---
 
