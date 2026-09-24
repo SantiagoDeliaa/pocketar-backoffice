@@ -9,6 +9,7 @@ const enlaces = [
   { href: '/publicaciones', texto: 'Publicaciones' },
   { href: '/usuarios', texto: 'Usuarios' },
   { href: '/reportes', texto: 'Reportes' },
+  { href: '/configuracion/motivos', texto: 'Motivos' },
 ];
 
 export function Navegacion() {

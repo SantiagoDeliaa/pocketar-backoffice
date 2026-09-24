@@ -249,7 +249,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
   .fila-caso { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 760px) {
-  .barra nav { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .barra nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .metricas-casos { grid-template-columns: 1fr 1fr; }
   .filtros-casos { grid-template-columns: 1fr; }
   .fila-caso { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -258,3 +258,20 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 @media (max-width: 420px) {
   .metricas-casos, .fila-caso, .grilla-datos-parte { grid-template-columns: 1fr; }
 }
+
+/* Bloque 8: motivos de rechazo */
+.barra-motivos { margin: 0 0 16px; }
+.lista-motivos { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.motivo { border: 1px solid var(--borde); background: var(--navy-elevado); border-radius: 12px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.motivo.inactivo { opacity: .75; border-style: dashed; }
+.motivo p { margin: 0; }
+.motivo-cabecera { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.motivo-pie { display: flex; gap: 8px 20px; align-items: center; flex-wrap: wrap; color: var(--atenuado); font-size: 13px; }
+.motivo-pie button { margin-left: auto; }
+.etiqueta-estado { font: 11px 'IBM Plex Mono', ui-monospace, monospace; border: 1px solid var(--borde); border-radius: 99px; padding: 4px 8px; color: var(--atenuado); }
+.etiqueta-estado.activo { color: var(--navy); background: var(--oro); border-color: var(--oro); }
+.campo-error { color: #ffc0bb; }
+.dialogo-cuerpo .aviso { margin-top: 12px; }
+.dialogo-cuerpo .aviso p { margin: 0 0 6px; }
+.dialogo-cuerpo .aviso p:last-child { margin-bottom: 0; }
+.dialogo-cuerpo .ayuda { margin: 6px 0 0; font-size: 13px; }
