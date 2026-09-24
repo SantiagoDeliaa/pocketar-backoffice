@@ -78,5 +78,28 @@ export function mensajeDeError(codigo: string, campo?: string): string {
   return MENSAJES[codigo] ?? 'No pudimos completar la operación. No se aplicó ningún cambio.';
 }
 
+/**
+ * Errores propios del editor de motivos de rechazo. Van aparte porque TEXT_REQUIRED, TEXT_TOO_LONG y
+ * TEXT_CONTAINS_PERSONAL_DATA ya existen en MENSAJES con el texto de la respuesta al reportante, y acá quien lee es el
+ * vendedor. Ningún mensaje lleva la palabra vetada por la Ley 20.266.
+ */
+const MENSAJES_MOTIVO: Record<string, string> = {
+  INVALID_CODE:
+    'El código no es válido. Usá entre 3 y 40 caracteres: letras minúsculas sin tildes, números y guion bajo (por ejemplo fotos_borrosas).',
+  TEXT_REQUIRED: 'Escribí el texto del motivo. Es obligatorio.',
+  TEXT_TOO_LONG: 'El texto pasa el máximo de 400 caracteres. Acortalo.',
+  TEXT_FORBIDDEN_VOCABULARY:
+    'El texto usa una palabra que no podemos usar por una restricción legal. Reemplazala por «puja», «oferta», «lote», «publicación» o «cierre».',
+  TEXT_CONTAINS_PERSONAL_DATA:
+    'El texto parece incluir un mail, un teléfono u otro número largo. Sacá los datos personales: el vendedor lo lee.',
+  LAST_ACTIVE:
+    'No se puede desactivar este motivo: tiene que quedar al menos un motivo activo. Activá otro antes de desactivar éste.',
+  INVALID_ORDER: 'El orden tiene que ser un número entero válido.',
+};
+
+export function mensajeDeErrorMotivo(codigo: string): string {
+  return MENSAJES_MOTIVO[codigo] ?? mensajeDeError(codigo);
+}
+
 export const AVISO_MOTIVO =
   'No escribas datos personales del usuario (mail, teléfono, nombre, dirección). Este texto queda registrado y no se puede borrar.';
