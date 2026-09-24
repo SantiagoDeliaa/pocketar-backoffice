@@ -88,6 +88,10 @@ export type ResultadoAccionUsuario =
       campos?: string[];
       /** Sólo en rehabilitar: hasta cuándo sigue bloqueada la cuenta si quedaba otra sanción. */
       bannedUntil?: string | null;
+      /** Al advertir, suspender o bloquear: la penalización creada (o la misma, en un replay). */
+      penalizacionId?: string;
+      /** Sólo al sancionar desde un caso: la sanción quedó vinculada al caso. */
+      vinculadaACaso?: boolean;
     }
   | {
       ok: false;

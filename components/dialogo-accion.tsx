@@ -154,6 +154,7 @@ export function DialogoAccion({
           <div className="exito" role="status">
             <p><strong>{resultado.replayed ? 'Esto ya estaba aplicado.' : 'Listo, se aplicó.'}</strong></p>
             {resultado.replayed && <p>Fue un reintento de la misma operación: no se repitió nada.</p>}
+            {resultado.vinculadaACaso && <p>Quedó vinculada al caso.</p>}
             {resultado.vence_at && <p>Vence: {fecha(resultado.vence_at)}</p>}
             {resultado.vence_at === null && resultado.efectos && <p>No vence solo: se levanta con «Rehabilitar».</p>}
             {resultado.campos && resultado.campos.length > 0 && <p>Campos corregidos: {resultado.campos.length}.</p>}

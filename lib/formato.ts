@@ -16,6 +16,17 @@ export function moneda(valor: number | null, divisa: string | null) {
   }).format(valor);
 }
 
+/** «3 d 4 h» / «5 h» / «Menos de 1 h». Para antigüedades que vienen en horas. */
+export function antiguedad(horas: number | null | undefined) {
+  if (horas === null || horas === undefined || Number.isNaN(horas)) return '—';
+  const total = Math.floor(horas);
+  if (total < 1) return 'Menos de 1 h';
+  if (total < 24) return `${total} h`;
+  const dias = Math.floor(total / 24);
+  const resto = total % 24;
+  return resto === 0 ? `${dias} d` : `${dias} d ${resto} h`;
+}
+
 export function fecha(valor: string | null) {
   if (!valor) return '—';
   return new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(valor));

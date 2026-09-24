@@ -206,3 +206,55 @@ h2 { font-size: 19px; margin-bottom: 8px; }
   .fila-usuario { grid-template-columns: 1fr; }
 }
 button:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Bloque 5-B: bandeja y ficha de casos */
+.metricas-casos { grid-template-columns: repeat(5, 1fr); }
+.metricas-casos .metrica.principal { grid-column: 1 / -1; }
+.metricas-casos .metrica strong { font-size: 28px; margin-bottom: 0; }
+.filtros-casos { border: 1px solid var(--borde); background: var(--navy-elevado); padding: 14px; border-radius: 14px; display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 10px; align-items: end; margin-top: 16px; }
+.filtros-casos label { margin: 0; }
+.filtros-casos .botonera { margin-top: 0; align-items: center; }
+.boton-enlace { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border: 1px solid var(--borde); border-radius: 10px; color: var(--crema); text-decoration: none; }
+.fila-caso { display: grid; grid-template-columns: 110px 1.2fr 1.4fr 1fr 1fr 1fr; align-items: center; gap: 16px; background: var(--navy-elevado); border: 1px solid var(--borde); border-radius: 12px; padding: 14px; color: var(--crema); text-decoration: none; min-height: 44px; }
+.fila-caso:hover { border-color: var(--oro); }
+.fila-caso span { display: block; color: var(--atenuado); font-size: 12px; margin-bottom: 3px; }
+.fila-caso strong { display: block; overflow-wrap: anywhere; }
+.fila-caso .sla strong { color: var(--oro); }
+.etiqueta-categoria { display: block; font-style: normal; font-size: 12px; color: var(--atenuado); margin-top: 3px; }
+.paginacion { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; }
+.detalle-caso { max-width: 1180px; }
+.partes-caso { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; margin-bottom: 16px; }
+.parte-caso { margin-bottom: 0; min-width: 0; }
+.parte-caso h3, .bloque h3 { font-size: 16px; margin: 0 0 10px; }
+.grilla-datos-parte { grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+.desplegable { border-top: 1px solid var(--borde); padding: 10px 0; }
+.desplegable summary { cursor: pointer; min-height: 32px; }
+.lista-simple { margin: 8px 0 0; padding-left: 18px; line-height: 1.5; }
+.contacto-parte { border-top: 1px solid var(--borde); padding-top: 12px; }
+.texto-libre { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.45; }
+.lista-eventos { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.evento { border-left: 3px solid var(--borde); padding: 4px 0 4px 12px; }
+.evento.respuesta_usuario { border-color: var(--oro); }
+.evento.sancion_vinculada { border-color: var(--alerta); }
+.evento p { margin: 4px 0 0; }
+.evento-cabecera { display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; }
+.acciones-caso { display: grid; gap: 16px; justify-content: stretch; }
+.acciones-caso > * { min-width: 0; }
+.panel-caso { border-top: 1px solid var(--borde); padding-top: 14px; }
+.panel-caso .botonera { margin-top: 10px; }
+.miniaturas-caso { margin-top: 12px; }
+@media (max-width: 900px) {
+  .metricas-casos { grid-template-columns: repeat(3, 1fr); }
+  .partes-caso { grid-template-columns: 1fr; }
+  .fila-caso { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  .barra nav { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .metricas-casos { grid-template-columns: 1fr 1fr; }
+  .filtros-casos { grid-template-columns: 1fr; }
+  .fila-caso { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grilla-datos-parte { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 420px) {
+  .metricas-casos, .fila-caso, .grilla-datos-parte { grid-template-columns: 1fr; }
+}

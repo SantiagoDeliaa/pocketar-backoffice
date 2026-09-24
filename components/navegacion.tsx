@@ -8,6 +8,7 @@ const enlaces = [
   { href: '/revision', texto: 'Revisión' },
   { href: '/publicaciones', texto: 'Publicaciones' },
   { href: '/usuarios', texto: 'Usuarios' },
+  { href: '/reportes', texto: 'Reportes' },
 ];
 
 export function Navegacion() {

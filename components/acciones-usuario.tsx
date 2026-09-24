@@ -2,16 +2,14 @@
 
 import { useState } from 'react';
 import { DialogoAccion } from '@/components/dialogo-accion';
+import { DialogosSancion } from '@/components/dialogos-sancion';
 import {
-  advertirUsuario,
-  bloquearUsuarioDefinitivo,
   corregirDatosUsuario,
   dispararRecuperacionPassword,
   liberarNombreDeUsuario,
   reenviarVerificacionMail,
-  suspenderUsuario,
 } from '@/lib/acciones/usuarios';
-import { ESCALONES_SUSPENSION, PROVINCIAS } from '@/lib/tipos/usuarios';
+import { PROVINCIAS } from '@/lib/tipos/usuarios';
 
 type Accion = 'advertir' | 'suspender' | 'bloquear' | 'alias' | 'datos' | 'verificacion' | 'recuperacion';
 
@@ -23,31 +21,10 @@ type Props = {
 
 const CAMPOS_VACIOS = { first_name: '', apellido: '', fecha_nacimiento: '', localidad_provincia: '', localidad_ciudad: '', phone: '' };
 
-function QueSeCancela({ definitivo }: { definitivo: boolean }) {
-  return (
-    <div className="advertencia" role="note">
-      <p><strong>Qué se va a cancelar</strong></p>
-      <ul>
-        <li>Todas las publicaciones de la cuenta que estén en revisión o abiertas se cancelan, y las ofertas que recibieron se rechazan.</li>
-        <li>Todas las ofertas pendientes que hizo la cuenta se cancelan, y en las publicaciones abiertas se recalcula la última oferta.</li>
-        <li>Las operaciones aceptadas que esperan la confirmación de entrega se dan de baja para las dos partes.</li>
-        <li>Se avisa a las contrapartes, sin decirles el motivo. Lo que ya está finalizado no se toca.</li>
-        <li>Nada de lo cancelado reaparece al rehabilitar la cuenta.</li>
-        <li>
-          {definitivo
-            ? 'La cuenta no puede iniciar sesión y el bloqueo no vence solo: se levanta desde el historial con «Rehabilitar».'
-            : 'La cuenta no puede iniciar sesión hasta que venza el plazo o la rehabilites desde el historial.'}
-        </li>
-      </ul>
-    </div>
-  );
-}
-
 export function AccionesUsuario({ userId, alias, actuales }: Props) {
   const [abierta, setAbierta] = useState<Accion | null>(null);
-  const [escalon, setEscalon] = useState('');
   const [campos, setCampos] = useState(CAMPOS_VACIOS);
-  const cerrar = () => { setAbierta(null); setEscalon(''); setCampos(CAMPOS_VACIOS); };
+  const cerrar = () => { setAbierta(null); setCampos(CAMPOS_VACIOS); };
   const hayCambios = Object.values(campos).some((valor) => valor.trim() !== '');
   const cambiar = (campo: keyof typeof CAMPOS_VACIOS) => (evento: { target: { value: string } }) =>
     setCampos((previo) => ({ ...previo, [campo]: evento.target.value }));
@@ -68,60 +45,8 @@ export function AccionesUsuario({ userId, alias, actuales }: Props) {
         <button className="secundario" onClick={() => setAbierta('recuperacion')}>Disparar recuperación de contraseña</button>
       </div>
 
-      {abierta === 'advertir' && (
-        <DialogoAccion
-          titulo="Advertir a esta cuenta"
-          etiquetaConfirmar="Enviar advertencia"
-          etiquetaPendiente="Enviando…"
-          cerrar={cerrar}
-          userId={userId}
-          ejecutar={(clave, motivo) => advertirUsuario(userId, motivo, clave)}
-        >
-          <p className="advertencia">
-            Una advertencia no bloquea nada: la persona sigue entrando y operando con normalidad. Le llega un aviso por
-            mail y en la app, sin decirle el motivo, y queda anotada en el historial.
-          </p>
-        </DialogoAccion>
-      )}
-
-      {abierta === 'suspender' && (
-        <DialogoAccion
-          titulo="Suspender esta cuenta"
-          etiquetaConfirmar="Suspender cuenta"
-          etiquetaPendiente="Suspendiendo…"
-          cerrar={cerrar}
-          peligro
-          userId={userId}
-          valido={escalon !== ''}
-          textoConfirmacion={alias}
-          etiquetaTextoConfirmacion="Para confirmar, escribí el nombre de usuario"
-          ejecutar={(clave, motivo) => suspenderUsuario(userId, escalon, motivo, clave)}
-        >
-          <QueSeCancela definitivo={false} />
-          <label>
-            Duración de la suspensión
-            <select value={escalon} onChange={(evento) => setEscalon(evento.target.value)} required aria-required="true">
-              <option value="">Elegí un escalón</option>
-              {ESCALONES_SUSPENSION.map((fila) => <option key={fila.valor} value={fila.valor}>{fila.texto}</option>)}
-            </select>
-          </label>
-        </DialogoAccion>
-      )}
-
-      {abierta === 'bloquear' && (
-        <DialogoAccion
-          titulo="Bloquear definitivamente esta cuenta"
-          etiquetaConfirmar="Bloquear cuenta"
-          etiquetaPendiente="Bloqueando…"
-          cerrar={cerrar}
-          peligro
-          userId={userId}
-          textoConfirmacion={alias}
-          etiquetaTextoConfirmacion="Para confirmar, escribí el nombre de usuario"
-          ejecutar={(clave, motivo) => bloquearUsuarioDefinitivo(userId, motivo, clave)}
-        >
-          <QueSeCancela definitivo />
-        </DialogoAccion>
+      {(abierta === 'advertir' || abierta === 'suspender' || abierta === 'bloquear') && (
+        <DialogosSancion accion={abierta} userId={userId} alias={alias} cerrar={cerrar} />
       )}
 
       {abierta === 'alias' && (
