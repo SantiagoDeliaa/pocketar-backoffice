@@ -11,7 +11,7 @@ const SEGUNDOS_VISIBLE = 60;
  * en el log. El valor vive únicamente en el estado de este componente: no se guarda en ningún otro lado, se oculta
  * solo a los 60 segundos y se pierde al salir de la pantalla.
  */
-export function RevelarContacto({ userId }: { userId: string }) {
+export function RevelarContacto({ userId, compacto = false }: { userId: string; compacto?: boolean }) {
   const [pidiendo, setPidiendo] = useState(false);
   const [motivo, setMotivo] = useState('');
   const [error, setError] = useState('');
@@ -27,8 +27,8 @@ export function RevelarContacto({ userId }: { userId: string }) {
   const ocultar = () => { setContacto(null); setMotivo(''); setPidiendo(false); setError(''); };
 
   return (
-    <section className="bloque" aria-labelledby="contacto-usuario">
-      <h2 id="contacto-usuario">Contacto</h2>
+    <section className={compacto ? "contacto-parte" : "bloque"} aria-labelledby={`contacto-usuario-${userId}`}>
+      {compacto ? <h3 id={`contacto-usuario-${userId}`}>Contacto</h3> : <h2 id={`contacto-usuario-${userId}`}>Contacto</h2>}
       {contacto ? (
         <div role="status">
           <div className="grilla-datos">
@@ -42,9 +42,9 @@ export function RevelarContacto({ userId }: { userId: string }) {
         <div>
           <label>
             Motivo para ver el contacto (obligatorio)
-            <textarea value={motivo} onChange={(evento) => setMotivo(evento.target.value)} maxLength={500} required aria-required="true" aria-describedby="aviso-contacto" autoComplete="off" />
+            <textarea value={motivo} onChange={(evento) => setMotivo(evento.target.value)} maxLength={500} required aria-required="true" aria-describedby={`aviso-contacto-${userId}`} autoComplete="off" />
           </label>
-          <p id="aviso-contacto" className="ayuda">{AVISO_MOTIVO}</p>
+          <p id={`aviso-contacto-${userId}`} className="ayuda">{AVISO_MOTIVO}</p>
           {error && <p className="error" role="alert">{error}</p>}
           <div className="botonera">
             <button

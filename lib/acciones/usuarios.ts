@@ -80,6 +80,7 @@ async function ejecutar(
     avisos,
     efectos: (datos.efectos as EfectosSancion | undefined) ?? undefined,
     vence_at: 'vence_at' in datos ? ((datos.vence_at as string | null) ?? null) : undefined,
+    penalizacionId: typeof datos.penalizacion_id === 'string' ? datos.penalizacion_id : undefined,
     campos: Array.isArray(datos.campos) ? (datos.campos as string[]) : undefined,
     // Sólo tiene sentido al rehabilitar: al suspender, banned_until es la propia sanción recién aplicada.
     bannedUntil:
